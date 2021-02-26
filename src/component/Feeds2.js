@@ -4,25 +4,22 @@ import axios from 'axios';
 import { Card } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import Pagination from "react-js-pagination";
-import search from "../component/Navbar";
+import Search from "../component/Navbar";
 
 
 const Feeds2 = (props) => {
   const [image, setImage] = useState([]);
   const [activePage, setActivePage] = useState(1);
   const [total, setTotal] = useState();
-  const [result, setResult] = useState([]);
-
+  const url = 'https://assesment-aia-api.herokuapp.com/feeds';
 
   useEffect(() => {
-    const url = 'https://assesment-aia-api.herokuapp.com/feeds';
     getData(url)
   }, []
 
   )
-  const handlePageChange = (page, tags) => {
-    console.log(page);
-    const urlApi = `https://assesment-aia-api.herokuapp.com/feeds?page=${page}&tags=${tags}`
+  const handlePageChange = (page) => {
+    const urlApi = url + `?page=${page}&tags=dogs`
     getData(urlApi);
     setActivePage(page);
   }
@@ -52,9 +49,6 @@ const Feeds2 = (props) => {
   };
 
   return <div>
-    <div className="grid">
-      {image.map(renderCard)}
-    </div>
     <div style={{
       display: 'flex',
       alignItems: 'center',
@@ -65,7 +59,24 @@ const Feeds2 = (props) => {
         activePage={activePage}
         totalItemsCount={total}
         onChange={handlePageChange}
-        itemsCountPerPage={10}
+        prevPageText="Previous"
+        nextPageText="Next"
+        itemClass="page-item"
+        linkClass="page-link"
+      />
+      <hr />
+    </div>
+    <div className="grid">{image.map(renderCard)}</div>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      <hr />
+      <Pagination
+        activePage={activePage}
+        totalItemsCount={total}
+        onChange={handlePageChange}
         prevPageText="Previous"
         nextPageText="Next"
         itemClass="page-item"

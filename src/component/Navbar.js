@@ -1,10 +1,20 @@
 import React from "react";
 import "../App.css";
 import * as ReactBootStrap from "react-bootstrap";
-import { Button, FormGroup, Input } from 'reactstrap';
+import { Form, Button, FormGroup, Input } from 'reactstrap';
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import { useState } from "react";
+import { useHistory } from 'react-router-dom';
+
 
 const NavBar = () => {
+  const [keyword, setKeyWord] = useState("");
+  let history = useHistory();
+  const handleSubmit = () => {
+    history.push(`?keyword=${keyword}`)
+  }
+
+
   return (
     <div className="App">
       <ReactBootStrap.Navbar
@@ -37,10 +47,13 @@ const NavBar = () => {
             </Link>
           </ReactBootStrap.Nav>
           <ReactBootStrap.Nav>
+
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-              <Input type="search" name="search" id="search" placeholder="search" />
+              <Form onSubmit={handleSubmit}>
+                <Input type="search" name="search" onChange={(e) => setKeyWord(e.target.value)} id="search" placeholder="search" />
+                {/* <Button size="sm" type="submit">Search</Button> */}
+              </Form>
             </FormGroup>
-            <Button type="submit">Search</Button>
           </ReactBootStrap.Nav>
         </ReactBootStrap.Navbar.Collapse>
       </ReactBootStrap.Navbar>
